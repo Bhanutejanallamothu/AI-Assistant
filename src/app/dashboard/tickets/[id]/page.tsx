@@ -10,6 +10,7 @@ import {
   MapPin,
   Clock,
   Calendar,
+  Wrench,
 } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
@@ -64,7 +65,7 @@ export default function TicketDetailPage({ params }: { params: { id: string } })
       <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
         <div className="flex items-center gap-4">
           <Button variant="outline" size="icon" className="h-7 w-7" asChild>
-            <Link href="/dashboard">
+            <Link href="/dashboard/tickets">
               <ChevronLeft className="h-4 w-4" />
               <span className="sr-only">Back</span>
             </Link>
