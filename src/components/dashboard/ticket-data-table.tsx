@@ -36,24 +36,25 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { type Ticket } from '@/lib/types';
+import { type Ticket, type TicketStatus, type TicketPriority } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { cn } from '@/lib/utils';
 
-const statusStyles = {
-  Open: 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300',
-  Assigned: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300',
-  'In-Progress': 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300',
-  Resolved: 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300',
-  Closed: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+const statusStyles: Record<TicketStatus, string> = {
+  Open: 'bg-chart-2/20 text-chart-2',
+  Assigned: 'bg-chart-3/20 text-chart-3',
+  'In-Progress': 'bg-chart-5/20 text-chart-5',
+  Resolved: 'bg-chart-1/20 text-chart-1',
+  Closed: 'bg-secondary text-secondary-foreground',
 };
 
-const priorityStyles = {
-  Low: 'border-green-500/50 text-green-600',
-  Medium: 'border-yellow-500/50 text-yellow-600',
-  High: 'border-orange-500/50 text-orange-600',
-  Urgent: 'border-red-500/50 text-red-600',
+const priorityStyles: Record<TicketPriority, string> = {
+  Low: 'bg-chart-1/20 text-chart-1',
+  Medium: 'bg-chart-3/20 text-chart-3',
+  High: 'bg-chart-4/20 text-chart-4',
+  Urgent: 'bg-destructive/20 text-destructive',
 };
+
 
 // Component to safely render dates on the client to avoid hydration errors
 const ClientFormattedDate = ({ isoDate }: { isoDate: string }) => {
@@ -93,7 +94,7 @@ const columns: ColumnDef<Ticket>[] = [
     accessorKey: 'status',
     header: 'Status',
     cell: ({ row }) => (
-      <Badge variant="outline" className={cn('border-transparent capitalize', statusStyles[row.getValue('status')])}>
+      <Badge className={cn('capitalize border-transparent', statusStyles[row.getValue('status') as TicketStatus])}>
         {row.getValue('status')}
       </Badge>
     ),
@@ -102,7 +103,7 @@ const columns: ColumnDef<Ticket>[] = [
     accessorKey: 'priority',
     header: 'Priority',
     cell: ({ row }) => (
-      <Badge variant="outline" className={cn('capitalize', priorityStyles[row.getValue('priority')])}>
+      <Badge className={cn('capitalize border-transparent', priorityStyles[row.getValue('priority') as TicketPriority])}>
         {row.getValue('priority')}
       </Badge>
     ),

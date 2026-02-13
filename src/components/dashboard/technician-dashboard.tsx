@@ -13,16 +13,17 @@ import { Badge } from '../ui/badge';
 import { cn } from '@/lib/utils';
 import { MapPin, Play, Check, Navigation } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { TicketPriority } from '@/lib/types';
 
 export default function TechnicianDashboard() {
   const technicianId = users.find(u => u.role === 'Field Technician')?.id;
   const technicianJobs = tickets.filter(t => t.technician?.id === technicianId && (t.status === 'Assigned' || t.status === 'In-Progress'));
 
-  const priorityStyles = {
-    Low: 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300',
-    Medium: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300',
-    High: 'bg-orange-100 text-orange-800 dark:bg-orange-900/50 dark:text-orange-300',
-    Urgent: 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300',
+  const priorityStyles: Record<TicketPriority, string> = {
+    Low: 'bg-chart-1/20 text-chart-1',
+    Medium: 'bg-chart-3/20 text-chart-3',
+    High: 'bg-chart-4/20 text-chart-4',
+    Urgent: 'bg-destructive/20 text-destructive',
   };
 
   return (

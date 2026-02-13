@@ -38,21 +38,22 @@ import { format, parseISO } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { AiChatPanel } from '@/components/tickets/ai-chat-panel';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { TicketPriority, TicketStatus } from '@/lib/types';
 
-const priorityStyles = {
-    Low: 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300',
-    Medium: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300',
-    High: 'bg-orange-100 text-orange-800 dark:bg-orange-900/50 dark:text-orange-300',
-    Urgent: 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300',
+const priorityStyles: Record<TicketPriority, string> = {
+  Low: 'bg-chart-1/20 text-chart-1',
+  Medium: 'bg-chart-3/20 text-chart-3',
+  High: 'bg-chart-4/20 text-chart-4',
+  Urgent: 'bg-destructive/20 text-destructive',
 };
 
-const statusStyles = {
-    Open: 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300',
-    Assigned: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300',
-    'In-Progress': 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300',
-    Resolved: 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300',
-    Closed: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-  };
+const statusStyles: Record<TicketStatus, string> = {
+    Open: 'bg-chart-2/20 text-chart-2',
+    Assigned: 'bg-chart-3/20 text-chart-3',
+    'In-Progress': 'bg-chart-5/20 text-chart-5',
+    Resolved: 'bg-chart-1/20 text-chart-1',
+    Closed: 'bg-secondary text-secondary-foreground',
+};
 
 export default function TicketDetailPage({ params }: { params: { id: string } }) {
   const ticket = tickets.find((t) => t.id === params.id);
@@ -74,7 +75,7 @@ export default function TicketDetailPage({ params }: { params: { id: string } })
           <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0 font-headline">
             {ticket.title}
           </h1>
-          <Badge variant="outline" className={cn('ml-auto sm:ml-0 border-transparent', statusStyles[ticket.status])}>
+          <Badge className={cn('ml-auto sm:ml-0 border-transparent', statusStyles[ticket.status])}>
             {ticket.status}
           </Badge>
           <div className="hidden items-center gap-2 md:ml-auto md:flex">
@@ -102,7 +103,7 @@ export default function TicketDetailPage({ params }: { params: { id: string } })
             <CardHeader className="pb-2">
               <CardDescription>Priority</CardDescription>
               <CardTitle className="text-2xl">
-                <Badge variant="outline" className={cn('text-base border-transparent', priorityStyles[ticket.priority])}>{ticket.priority}</Badge>
+                <Badge className={cn('text-base border-transparent', priorityStyles[ticket.priority])}>{ticket.priority}</Badge>
               </CardTitle>
             </CardHeader>
           </Card>

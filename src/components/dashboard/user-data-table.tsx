@@ -41,10 +41,10 @@ import { cn } from '@/lib/utils';
 import { Checkbox } from '../ui/checkbox';
 
 const roleStyles: Record<UserRole, string> = {
-    Admin: 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300',
-    'Support Agent': 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300',
-    'Field Technician': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300',
-    Customer: 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300',
+    Admin: 'bg-destructive/20 text-destructive',
+    'Support Agent': 'bg-chart-2/20 text-chart-2',
+    'Field Technician': 'bg-chart-4/20 text-chart-4',
+    Customer: 'bg-chart-1/20 text-chart-1',
 };
 
 const columns: ColumnDef<User>[] = [
@@ -101,7 +101,7 @@ const columns: ColumnDef<User>[] = [
       </Button>
     ),
     cell: ({ row }) => (
-      <Badge variant="outline" className={cn('border-transparent capitalize font-medium', roleStyles[row.getValue('role')])}>
+      <Badge className={cn('border-transparent capitalize font-medium', roleStyles[row.getValue('role') as UserRole])}>
         {row.getValue('role')}
       </Badge>
     ),
