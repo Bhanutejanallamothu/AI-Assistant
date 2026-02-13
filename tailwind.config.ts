@@ -76,8 +76,11 @@ const config = {
       },
       borderRadius: {
         lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        md: 'calc(var(--radius) - 4px)',
+        sm: 'calc(var(--radius) - 8px)',
+      },
+      boxShadow: {
+        saas: '0 6px 18px rgba(0,0,0,0.05)',
       },
       keyframes: {
         'accordion-down': {

@@ -39,20 +39,21 @@ import { Badge } from '@/components/ui/badge';
 import { type Ticket, type TicketStatus, type TicketPriority } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { cn } from '@/lib/utils';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
 const statusStyles: Record<TicketStatus, string> = {
-  Open: 'bg-chart-2/20 text-chart-2',
-  Assigned: 'bg-chart-3/20 text-chart-3',
-  'In-Progress': 'bg-chart-5/20 text-chart-5',
-  Resolved: 'bg-chart-1/20 text-chart-1',
-  Closed: 'bg-secondary text-secondary-foreground',
+  Open: 'bg-muted/70 text-muted-foreground border-transparent',
+  Assigned: 'bg-chart-2/15 text-chart-2 border-transparent',
+  'In-Progress': 'bg-chart-5/15 text-chart-5 border-transparent',
+  Resolved: 'bg-chart-1/15 text-chart-1 border-transparent',
+  Closed: 'bg-secondary text-secondary-foreground border-transparent',
 };
 
 const priorityStyles: Record<TicketPriority, string> = {
-  Low: 'bg-chart-1/20 text-chart-1',
-  Medium: 'bg-chart-3/20 text-chart-3',
-  High: 'bg-chart-4/20 text-chart-4',
-  Urgent: 'bg-destructive/20 text-destructive',
+  Low: 'bg-chart-1/15 text-chart-1 border-transparent',
+  Medium: 'bg-chart-3/15 text-chart-3 border-transparent',
+  High: 'bg-chart-4/15 text-chart-4 border-transparent',
+  Urgent: 'bg-destructive/15 text-destructive border-transparent',
 };
 
 
@@ -62,7 +63,7 @@ const ClientFormattedDate = ({ isoDate }: { isoDate: string }) => {
 
   React.useEffect(() => {
     if (isoDate) {
-      setFormattedDate(format(parseISO(isoDate), 'PPpp'));
+      setFormattedDate(format(parseISO(isoDate), 'PP'));
     }
   }, [isoDate]);
 
@@ -72,29 +73,19 @@ const ClientFormattedDate = ({ isoDate }: { isoDate: string }) => {
 const columns: ColumnDef<Ticket>[] = [
   {
     accessorKey: 'id',
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Ticket ID
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
+    header: 'Ticket',
     cell: ({ row }) => (
-      <Link href={`/dashboard/tickets/${row.getValue('id')}`} className="font-medium hover:underline">{row.getValue('id')}</Link>
+      <div className="flex flex-col">
+        <Link href={`/dashboard/tickets/${row.getValue('id')}`} className="font-semibold hover:underline">{row.getValue('id')}</Link>
+        <div className="text-xs text-muted-foreground max-w-xs truncate">{row.original.title}</div>
+      </div>
     ),
-  },
-  {
-    accessorKey: 'title',
-    header: 'Issue',
-    cell: ({ row }) => <div className="max-w-xs truncate">{row.getValue('title')}</div>
   },
   {
     accessorKey: 'status',
     header: 'Status',
     cell: ({ row }) => (
-      <Badge className={cn('capitalize border-transparent', statusStyles[row.getValue('status') as TicketStatus])}>
+      <Badge className={cn('capitalize', statusStyles[row.getValue('status') as TicketStatus])}>
         {row.getValue('status')}
       </Badge>
     ),
@@ -103,29 +94,48 @@ const columns: ColumnDef<Ticket>[] = [
     accessorKey: 'priority',
     header: 'Priority',
     cell: ({ row }) => (
-      <Badge className={cn('capitalize border-transparent', priorityStyles[row.getValue('priority') as TicketPriority])}>
+      <Badge className={cn('capitalize', priorityStyles[row.getValue('priority') as TicketPriority])}>
         {row.getValue('priority')}
       </Badge>
     ),
   },
   {
-    accessorKey: 'customer.name',
-    header: 'Customer',
-  },
-  {
-    accessorKey: 'technician',
-    header: 'Technician',
+    id: 'users',
+    header: 'Users',
     cell: ({ row }) => {
-        const technician = row.getValue('technician') as Ticket['technician'];
-        return technician ? (
-            <div className="flex items-center gap-2">
-                <Avatar className="h-6 w-6">
-                    <AvatarImage src={technician.avatar} alt={technician.name} />
-                    <AvatarFallback>{technician.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <span>{technician.name}</span>
+        const ticket = row.original;
+        const customer = ticket.customer;
+        const technician = ticket.technician;
+        return (
+            <div className="flex items-center">
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Avatar className="h-7 w-7 border-2 border-background">
+                                <AvatarImage src={customer.avatar} alt={customer.name} />
+                                <AvatarFallback>{customer.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                            </Avatar>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Customer: {customer.name}</p>
+                        </TooltipContent>
+                    </Tooltip>
+                    {technician && (
+                         <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Avatar className="-ml-2 h-7 w-7 border-2 border-background">
+                                    <AvatarImage src={technician.avatar} alt={technician.name} />
+                                    <AvatarFallback>{technician.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                                </Avatar>
+                            </TooltipTrigger>
+                             <TooltipContent>
+                                <p>Technician: {technician.name}</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    )}
+                </TooltipProvider>
             </div>
-        ) : <span className="text-muted-foreground">Unassigned</span>
+        )
     },
   },
   {
@@ -134,38 +144,41 @@ const columns: ColumnDef<Ticket>[] = [
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        className="-ml-4"
       >
         Last Update
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => <ClientFormattedDate isoDate={row.getValue('updatedAt')} />,
+    cell: ({ row }) => <div className="text-muted-foreground text-sm"><ClientFormattedDate isoDate={row.getValue('updatedAt')} /></div>,
   },
   {
     id: 'actions',
     cell: ({ row }) => {
       const ticket = row.original;
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem asChild>
-                <Link href={`/dashboard/tickets/${ticket.id}`}>View Details</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>Assign Technician</DropdownMenuItem>
-            <DropdownMenuItem>Update Status</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive">
-              Delete Ticket
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex justify-end">
+            <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuItem asChild>
+                    <Link href={`/dashboard/tickets/${ticket.id}`}>View Details</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>Assign Technician</DropdownMenuItem>
+                <DropdownMenuItem>Update Status</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="text-destructive">
+                Delete Ticket
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+            </DropdownMenu>
+        </div>
       );
     },
   },
@@ -177,7 +190,7 @@ export function TicketDataTable({ tickets }: { tickets: Ticket[] }) {
     []
   );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+    React.useState<VisibilityState>({ title: false });
 
   const table = useReactTable({
     data: tickets,
@@ -198,9 +211,9 @@ export function TicketDataTable({ tickets }: { tickets: Ticket[] }) {
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex items-center pb-4">
         <Input
-          placeholder="Filter by issue..."
+          placeholder="Filter tickets..."
           value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
             table.getColumn('title')?.setFilterValue(event.target.value)
@@ -208,7 +221,7 @@ export function TicketDataTable({ tickets }: { tickets: Ticket[] }) {
           className="max-w-sm"
         />
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-lg border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

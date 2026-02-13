@@ -11,13 +11,18 @@ import { users } from '@/lib/data';
 
 export default function DashboardPage() {
   const [activeRole, setActiveRole] = React.useState<UserRole>('Admin');
+  const currentUser = users.find(u => u.role === activeRole);
 
   return (
-    <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-bold tracking-tight font-headline">Dashboard</h1>
-      
-      <Tabs value={activeRole} onValueChange={(value) => setActiveRole(value as UserRole)}>
-        <div className="flex items-center justify-between">
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight font-headline">
+            Welcome back, {currentUser?.name.split(' ')[0]}!
+          </h1>
+          <p className="text-muted-foreground">Here's a summary of what's happening.</p>
+        </div>
+        <Tabs value={activeRole} onValueChange={(value) => setActiveRole(value as UserRole)}>
             <TabsList>
                 {users.map((user) => (
                     <TabsTrigger key={user.id} value={user.role}>
@@ -25,10 +30,10 @@ export default function DashboardPage() {
                     </TabsTrigger>
                 ))}
             </TabsList>
-            <p className="text-sm text-muted-foreground">
-                Currently viewing as: <span className="font-semibold text-foreground">{users.find(u => u.role === activeRole)?.name}</span>
-            </p>
-        </div>
+        </Tabs>
+      </div>
+      
+      <Tabs value={activeRole} className="w-full">
         <TabsContent value="Admin">
             <AdminDashboard />
         </TabsContent>

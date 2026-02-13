@@ -20,16 +20,16 @@ export default function TechnicianDashboard() {
   const technicianJobs = tickets.filter(t => t.technician?.id === technicianId && (t.status === 'Assigned' || t.status === 'In-Progress'));
 
   const priorityStyles: Record<TicketPriority, string> = {
-    Low: 'bg-chart-1/20 text-chart-1',
-    Medium: 'bg-chart-3/20 text-chart-3',
-    High: 'bg-chart-4/20 text-chart-4',
-    Urgent: 'bg-destructive/20 text-destructive',
+    Low: 'bg-chart-1/15 text-chart-1 border-transparent',
+    Medium: 'bg-chart-3/15 text-chart-3 border-transparent',
+    High: 'bg-chart-4/15 text-chart-4 border-transparent',
+    Urgent: 'bg-destructive/15 text-destructive border-transparent',
   };
 
   return (
-    <div className="grid auto-rows-max items-start gap-4 md:gap-8">
+    <div className="grid auto-rows-max items-start gap-6 md:gap-8">
         <h2 className="text-xl font-bold tracking-tight font-headline">My Assigned Jobs</h2>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {technicianJobs.map((job) => (
           <Card key={job.id}>
             <CardHeader>
@@ -37,14 +37,14 @@ export default function TechnicianDashboard() {
                 <Link href={`/dashboard/tickets/${job.id}`} className="font-semibold hover:underline">{job.id}</Link>
                 <Badge
                   className={cn(
-                    'border-transparent',
+                    'border-transparent capitalize',
                     priorityStyles[job.priority]
                   )}
                 >
                   {job.priority}
                 </Badge>
               </div>
-              <CardTitle className="pt-2">{job.title}</CardTitle>
+              <CardTitle className="pt-2 text-xl">{job.title}</CardTitle>
               <CardDescription className="flex items-center gap-2 pt-1">
                 <MapPin className="h-4 w-4" />
                 {job.location}
@@ -67,7 +67,7 @@ export default function TechnicianDashboard() {
                 <Link href={`/dashboard/tickets/${job.id}`}>View Details</Link>
               </Button>
               <div className="flex gap-2">
-                <Button variant="outline" size="icon" className="h-8 w-8">
+                <Button variant="outline" size="icon" className="h-9 w-9">
                   <Navigation className="h-4 w-4" />
                 </Button>
                 {job.status === 'Assigned' && (

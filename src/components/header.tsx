@@ -32,7 +32,7 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+    <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/80 backdrop-blur-sm px-6">
       <SidebarTrigger className="sm:hidden" />
       <Breadcrumb className="hidden font-headline md:flex">
         <BreadcrumbList>
@@ -65,16 +65,20 @@ export function Header() {
         </BreadcrumbList>
       </Breadcrumb>
       <div className="relative ml-auto flex-1 md:grow-0">
-        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
           type="search"
           placeholder="Search..."
-          className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[320px]"
+          className="w-full rounded-full bg-background pl-9 md:w-[300px] lg:w-[400px]"
         />
       </div>
       <ThemeToggle />
-      <Button variant="ghost" size="icon" className="h-8 w-8">
-        <Bell className="h-4 w-4" />
+      <Button variant="ghost" size="icon" className="relative h-9 w-9">
+        <Bell className="h-5 w-5" />
+        <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+        </span>
         <span className="sr-only">Toggle notifications</span>
       </Button>
       <UserNav />

@@ -1,8 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Label, Pie, PieChart, Sector } from 'recharts';
-import { PieSectorDataItem } from 'recharts/types/polar/Pie';
+import { Label, Pie, PieChart, Cell, Legend } from 'recharts';
 
 import {
   ChartContainer,
@@ -16,30 +15,30 @@ const statusCounts = tickets.reduce((acc, ticket) => {
   return acc;
 }, {} as Record<string, number>);
 
-const chartData = Object.entries(statusCounts).map(([status, count], index) => ({
-  status,
-  count,
-  fill: `var(--color-chart-${(index % 5) + 1})`,
+
+const chartData = Object.entries(statusCounts).map(([status, count]) => ({
+  name: status,
+  value: count,
 }));
 
-const totalTickets = tickets.length;
+const COLORS = [
+    'hsl(var(--chart-2))', 
+    'hsl(var(--chart-5))', 
+    'hsl(var(--chart-1))', 
+    'hsl(var(--muted))',
+    'hsl(var(--chart-3))'
+];
 
 export function TicketsByStatusChart() {
-  const id = 'pie-interactive';
-  const [activeIndex, setActiveIndex] = React.useState(0);
 
-  const onPieEnter = React.useCallback(
-    (_: any, index: number) => {
-      setActiveIndex(index);
-    },
-    [setActiveIndex]
-  );
+  const totalTickets = React.useMemo(() => {
+    return chartData.reduce((acc, curr) => acc + curr.value, 0);
+  }, []);
 
   return (
     <ChartContainer
       config={{}}
-      id={id}
-      className="mx-auto aspect-square h-64"
+      className="mx-auto aspect-square h-full"
     >
       <PieChart>
         <ChartTooltip
@@ -48,37 +47,52 @@ export function TicketsByStatusChart() {
         />
         <Pie
           data={chartData}
-          dataKey="count"
-          nameKey="status"
-          innerRadius={50}
-          strokeWidth={5}
-          activeIndex={activeIndex}
-          activeShape={(props) => {
-            const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } = props;
-            return (
-              <g>
-                <text x={cx} y={cy} dy={-4} textAnchor="middle" fill={fill} className="text-2xl font-bold" >
-                  {props.payload.count}
-                </text>
-                 <text x={cx} y={cy} dy={16} textAnchor="middle" fill="hsl(var(--muted-foreground))" className="text-sm">
-                  {props.payload.status}
-                </text>
-                <Sector
-                  cx={cx}
-                  cy={cy}
-                  innerRadius={innerRadius}
-                  outerRadius={outerRadius}
-                  startAngle={startAngle}
-                  endAngle={endAngle}
-                  fill={fill}
-                  stroke={fill}
-                />
-              </g>
-            )
-          }}
-          onMouseEnter={onPieEnter}
+          dataKey="value"
+          nameKey="name"
+          innerRadius={60}
+          strokeWidth={2}
+          labelLine={false}
         >
+          <Label
+            content={({ viewBox }) => {
+              if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
+                return (
+                  <text
+                    x={viewBox.cx}
+                    y={viewBox.cy}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                  >
+                    <tspan
+                      x={viewBox.cx}
+                      y={viewBox.cy}
+                      className="fill-foreground text-3xl font-bold"
+                    >
+                      {totalTickets.toLocaleString()}
+                    </tspan>
+                    <tspan
+                      x={viewBox.cx}
+                      y={(viewBox.cy || 0) + 20}
+                      className="fill-muted-foreground"
+                    >
+                      Tickets
+                    </tspan>
+                  </text>
+                )
+              }
+            }}
+          />
+           {chartData.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          ))}
         </Pie>
+        <Legend 
+            layout="vertical" 
+            verticalAlign="middle" 
+            align="right" 
+            iconSize={10}
+            iconType="circle"
+        />
       </PieChart>
     </ChartContainer>
   );
