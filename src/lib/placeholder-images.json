@@ -1,3 +1,40 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "avatar-1",
+      "description": "Admin user avatar",
+      "imageUrl": "https://images.unsplash.com/photo-1600878459081-02f46f27b406?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwcm9mZXNzaW9uYWwlMjBwZXJzb258ZW58MHx8fHwxNzcwOTI2NzkxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "professional person"
+    },
+    {
+      "id": "avatar-2",
+      "description": "Support agent avatar",
+      "imageUrl": "https://images.unsplash.com/photo-1599820137139-d5bd44bdf53f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxmcmllbmRseSUyMHBlcnNvbnxlbnwwfHx8fDE3NzEwMDAyMzl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "friendly person"
+    },
+    {
+      "id": "avatar-3",
+      "description": "Field technician avatar",
+      "imageUrl": "https://images.unsplash.com/photo-1534746902580-8e5025eaccb5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwZXJzb24lMjB0b29sc3xlbnwwfHx8fDE3NzEwMDAyMzl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person tools"
+    },
+    {
+      "id": "avatar-4",
+      "description": "Customer avatar",
+      "imageUrl": "https://images.unsplash.com/photo-1607529378676-a20456ee2f6b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzbWlsaW5nJTIwcGVyc29ufGVufDB8fHx8MTc3MDkzODQ1OHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "smiling person"
+    },
+    {
+      "id": "avatar-5",
+      "description": "Customer avatar 2",
+      "imageUrl": "https://images.unsplash.com/photo-1579047917338-a6a69144fe63?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxoYXBweSUyMHBlcnNvbnxlbnwwfHx8fDE3NzA5MTAyNDh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "happy person"
+    },
+    {
+      "id": "avatar-6",
+      "description": "Technician avatar 2",
+      "imageUrl": "https://images.unsplash.com/photo-1760344967947-f1744b592779?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx3b3JrZXIlMjB1bmlmb3JtfGVufDB8fHx8MTc3MTAwMDIzOXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "worker uniform"
+    }
+  ]
 }
