@@ -55,6 +55,19 @@ const priorityStyles = {
   Urgent: 'border-red-500/50 text-red-600',
 };
 
+// Component to safely render dates on the client to avoid hydration errors
+const ClientFormattedDate = ({ isoDate }: { isoDate: string }) => {
+  const [formattedDate, setFormattedDate] = React.useState('');
+
+  React.useEffect(() => {
+    if (isoDate) {
+      setFormattedDate(format(parseISO(isoDate), 'PPpp'));
+    }
+  }, [isoDate]);
+
+  return <>{formattedDate}</>;
+};
+
 const columns: ColumnDef<Ticket>[] = [
   {
     accessorKey: 'id',
@@ -125,7 +138,7 @@ const columns: ColumnDef<Ticket>[] = [
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => format(parseISO(row.getValue('updatedAt')), 'PPpp'),
+    cell: ({ row }) => <ClientFormattedDate isoDate={row.getValue('updatedAt')} />,
   },
   {
     id: 'actions',
