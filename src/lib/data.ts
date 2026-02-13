@@ -2,7 +2,6 @@ import { type User, type Ticket, type NavLink } from './types';
 import {
   LayoutDashboard,
   Ticket as TicketIcon,
-  Users,
   Wrench,
   Settings,
   AreaChart,
@@ -178,12 +177,6 @@ export const navLinks: NavLink[] = [
     label: 'My Jobs',
     icon: Wrench,
     roles: ['Field Technician'],
-  },
-  {
-    href: '/dashboard/users',
-    label: 'User Management',
-    icon: Users,
-    roles: ['Admin'],
   },
   {
     href: '/dashboard/analytics',
