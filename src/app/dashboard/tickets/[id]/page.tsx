@@ -11,6 +11,7 @@ import {
   Clock,
   Calendar,
   Wrench,
+  MessageSquare,
 } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
@@ -191,7 +192,10 @@ export default function TicketDetailPage({ params }: { params: { id: string } })
         )}
         <Card>
             <CardHeader>
-                <CardTitle>AI Troubleshooting Assistant</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                    <MessageSquare className="h-5 w-5" />
+                    AI Troubleshooting Assistant
+                </CardTitle>
             </CardHeader>
             <CardContent>
                 <AiChatPanel ticketId={ticket.id} />
